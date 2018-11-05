@@ -1,3 +1,8 @@
+## 0.0.3
+
+- Simple regression functions.
+- Basic Least-Squares Curve Fitting Routines. 
+
 ## 0.0.2
 
 - Euclid-related functions.
