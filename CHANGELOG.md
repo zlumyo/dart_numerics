@@ -1,3 +1,8 @@
+## 0.0.2
+
+- Euclid-related functions.
+- `Permutation` class implemented permutation logic. 
+
 ## 0.0.1
 
 - Various constants.
