@@ -4,6 +4,7 @@
 library dart_numerics;
 
 export 'src/constants.dart';
+export 'src/euclid.dart';
 export 'src/permutation.dart';
 export 'src/precision.dart';
 export 'src/precision_equality.dart';

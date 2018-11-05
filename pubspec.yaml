@@ -1,11 +1,14 @@
 name: dart_numerics
 description: An ultimate numerical package for Dart.
-version: 0.0.2
+version: 0.0.2-hotfix
 homepage: https://github.com/zlumyo/dart_numerics
 author: Vladimir Ivanov <zlumyo@gmail.com>
 
 environment:
   sdk: '>=2.0.0 <3.0.0'
+
+dependencies:
+  tuple: ^1.0.2
 
 dev_dependencies:
   test: ^1.0.0
