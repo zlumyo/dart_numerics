@@ -9,7 +9,7 @@ Tuple2<double, double> line(List<double> x, List<double> y) => fit(x, y);
 
 /// Least-Squares fitting the points (x,y) to a line y : x -> a+b*x,
 /// returning a function y' for the best fitting line.
-Function lineFunc(List<double> x, List<double> y) {
+double Function(double) lineFunc(List<double> x, List<double> y) {
   var parameters = fit(x, y);
   double intercept = parameters.item1, slope = parameters.item2;
   return (z) => intercept + slope * z;
@@ -23,7 +23,7 @@ double lineThroughOrigin(List<double> x, List<double> y) =>
 
 /// Least-Squares fitting the points (x,y) to a line through origin y : x -> b*x,
 /// returning a function y' for the best fitting line.
-Function lineThroughOriginFunc(List<double> x, List<double> y) {
+double Function(double) lineThroughOriginFunc(List<double> x, List<double> y) {
   double slope = fitThroughOrigin(x, y);
   return (z) => slope * z;
 }
