@@ -25,5 +25,6 @@ export 'src/fit.dart';
 export 'src/permutation.dart';
 export 'src/precision.dart';
 export 'src/precision_equality.dart';
+export 'src/precision_comparison.dart';
 export 'src/trigonometry.dart';
 export 'src/utils.dart' hide unpackSinglePass;
