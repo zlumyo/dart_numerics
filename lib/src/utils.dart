@@ -8,7 +8,8 @@ import 'package:tuple/tuple.dart';
 /// WARNING!!! Some unit-tests fail because of that!
 double log10(num x) => log(x) / ln10;
 
-Tuple2<List<TU>, List<TV>> unpackSinglePass<TU, TV>(Iterable<Tuple2<TU, TV>> samples) {
+Tuple2<List<TU>, List<TV>> unpackSinglePass<TU, TV>(
+    Iterable<Tuple2<TU, TV>> samples) {
   var u = new List<TU>();
   var v = new List<TV>();
 

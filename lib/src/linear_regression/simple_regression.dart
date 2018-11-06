@@ -31,12 +31,12 @@ Tuple2<double, double> fit(List<double> x, List<double> y) {
   double variance = 0.0;
   for (int i = 0; i < x.length; i++) {
     double diff = x[i] - mx;
-    covariance += diff*(y[i] - my);
-    variance += diff*diff;
+    covariance += diff * (y[i] - my);
+    variance += diff * diff;
   }
 
-  var b = covariance/variance;
-  return Tuple2<double, double>(my - b*mx, b);
+  var b = covariance / variance;
+  return Tuple2<double, double>(my - b * mx, b);
 }
 
 /// Least-Squares fitting the points (x,y) to a line y : x -> a+b*x,
@@ -62,8 +62,8 @@ double fitThroughOrigin(List<double> x, List<double> y) {
   double mxy = 0.0;
   double mxx = 0.0;
   for (int i = 0; i < x.length; i++) {
-    mxx += x[i]*x[i];
-    mxy += x[i]*y[i];
+    mxx += x[i] * x[i];
+    mxy += x[i] * y[i];
   }
 
   return mxy / mxx;
