@@ -112,6 +112,31 @@ int compareToRelativeI(double a, double b, int decimalPlaces) {
   return a.compareTo(b);
 }
 
+/// Compares two doubles and determines which double is bigger.
+/// a < b -> -1; a ~= b (almost equal according to parameter) -> 0; a > b -> +1.
+int compareToNumbersBetween(double a, double b, int maxNumbersBetween) {
+  // NANs are equal to nothing,
+  // not even themselves, and thus they're not bigger or
+  // smaller than anything either
+  if (a.isNaN || b.isNaN) {
+    return a.compareTo(b);
+  }
+
+  // If A or B are infinity (positive or negative) then
+  // only return true if first is smaller
+  if (a.isInfinite || b.isInfinite) {
+    return a.compareTo(b);
+  }
+
+  // If the numbers are equal to within the tolerance then
+  // there's technically no difference
+  if (almostEqualNumbersBetween(a, b, maxNumbersBetween)) {
+    return 0;
+  }
+
+  return a.compareTo(b);
+}
+
 /// Compares two doubles and determines if the first value is larger than
 /// the second value to within the specified number of decimal places or not.
 bool isLargerI(double a, double b, int decimalPlaces) {
@@ -164,6 +189,20 @@ bool isLargerRelativeD(double a, double b, double maximumError) {
   return compareToRelativeD(a, b, maximumError) > 0;
 }
 
+/// Compares two doubles and determines if the [a] value is larger than the [b]
+/// value to within the tolerance or not. Equality comparison is based on
+/// the binary representation.
+bool isLargerNumbersBetween(double a, double b, int maxNumbersBetween) {
+  // If A or B are a NAN, return false. NANs are equal to nothing,
+  // not even themselves, and thus they're not bigger or
+  // smaller than anything either
+  if (a.isNaN || b.isNaN) {
+    return false;
+  }
+
+  return compareToNumbersBetween(a, b, maxNumbersBetween) > 0;
+}
+
 /// Compares two doubles and determines if the first value is smaller than
 /// the second value to within the specified number of decimal places or not.
 bool isSmallerI(double a, double b, int decimalPlaces) {
@@ -214,4 +253,18 @@ bool isSmallerRelativeD(double a, double b, double maximumError) {
   }
 
   return compareToRelativeD(a, b, maximumError) < 0;
+}
+
+/// Compares two doubles and determines if the [a] value is smaller than the [b]
+/// value to within the tolerance or not. Equality comparison is based on
+/// the binary representation.
+bool isSmallerNumbersBetween(double a, double b, int maxNumbersBetween) {
+  // If A or B are a NAN, return false. NANs are equal to nothing,
+  // not even themselves, and thus they're not bigger or
+  // smaller than anything either
+  if (a.isNaN || b.isNaN) {
+    return false;
+  }
+
+  return compareToNumbersBetween(a, b, maxNumbersBetween) < 0;
 }

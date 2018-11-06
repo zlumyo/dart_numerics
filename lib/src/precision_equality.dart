@@ -161,3 +161,49 @@ bool almostEqualRelativeD(double a, double b, double maximumError) =>
 /// otherwise the relative difference is compared.
 bool almostEqualRelativeI(double a, double b, int decimalPlaces) =>
     almostEqualNormRelativeI(a, b, a - b, decimalPlaces);
+
+/// Compares two doubles and determines if they are equal to within
+/// the tolerance or not. Equality comparison is based on the binary representation.
+///
+/// Determines the 'number' of floating point numbers between two values (i.e. the number of discrete steps
+/// between the two numbers) and then checks if that is within the specified tolerance. So if a tolerance
+/// of 1 is passed then the result will be true only if the two numbers have the same binary representation
+/// OR if they are two adjacent numbers that only differ by one step.
+///
+/// The comparison method used is explained in http://www.cygnus-software.com/papers/comparingfloats/comparingfloats.htm .
+///
+/// Throws [ArgumentError] if [maxNumbersBetween] is smaller than one.
+bool almostEqualNumbersBetween(double a, double b, int maxNumbersBetween) {
+  // Make sure maxNumbersBetween is non-negative and small enough that the
+  // default NAN won't compare as equal to anything.
+  if (maxNumbersBetween < 1) {
+    throw ArgumentError.value(
+        maxNumbersBetween, 'maxNumbersBetween', messages.argumentPositive);
+  }
+
+  // If A or B are infinity (positive or negative) then
+  // only return true if they are exactly equal to each other -
+  // that is, if they are both infinities of the same sign.
+  if (a.isInfinite || b.isInfinite) {
+    return a == b;
+  }
+
+  // If A or B are a NAN, return false. NANs are equal to nothing,
+  // not even themselves.
+  if (a.isNaN || b.isNaN) {
+    return false;
+  }
+
+  // Get the first double and convert it to an integer value (by using the binary representation)
+  int first = asDirectionalInt64(a);
+
+  // Get the second double and convert it to an integer value (by using the binary representation)
+  int second = asDirectionalInt64(b);
+
+  // Now compare the values.
+  // Note that this comparison can overflow so we'll approach this differently
+  // Do note that we could overflow this way too. We should probably check that we don't.
+  return (a > b)
+      ? (second + maxNumbersBetween >= first)
+      : (first + maxNumbersBetween >= second);
+}

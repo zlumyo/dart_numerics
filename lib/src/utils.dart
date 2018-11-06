@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:tuple/tuple.dart';
 
@@ -19,4 +20,10 @@ Tuple2<List<TU>, List<TV>> unpackSinglePass<TU, TV>(
   }
 
   return Tuple2<List<TU>, List<TV>>(u, v);
+}
+
+double int64BitsToDouble(int value) {
+  var bytes = ByteData(8);
+  bytes.setInt64(0, value);
+  return bytes.getFloat64(0);
 }
