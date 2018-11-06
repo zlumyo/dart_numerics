@@ -1,6 +1,20 @@
-/// Support for doing something awesome.
+/// # dart-numerics
 ///
-/// More dartdocs go here.
+/// `dart-numerics` is an ultimate mathematical package inspired by .NET analogue,
+/// aiming to provide methods and algorithms for numerical computations in science,
+/// engineering and every day use.
+///
+/// ## Usage
+///
+/// A simple usage example:
+///
+/// ```dart
+/// import 'package:dart_numerics/dart_numerics.dart' as numerics;
+///
+/// main() {
+///   print(numerics.acosh(numerics.pi / 2));
+/// }
+/// ```
 library dart_numerics;
 
 export 'src/linear_regression/simple_regression.dart';
