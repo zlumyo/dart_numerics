@@ -6,3 +6,5 @@ const String sampleVectorsSameLength =
     'All sample vectors must have the same length. However, vectors with disagreeing length have been provided. A sample with index i is given by the value at index i of each provided vector.';
 const String regressionNotEnoughSamples =
     'A regression of the requested order missmatches with provided.';
+const String argumentInIntervalXYInclusive =
+    'Value is expected to be between interval (inclusive).';

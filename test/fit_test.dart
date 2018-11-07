@@ -6,7 +6,7 @@ import 'package:dart_numerics/dart_numerics.dart';
 void main() {
   test('Fits to exact line when points are on line', () {
     var x = [30.0, 40.0, 50.0, 12.0, -3.4, 100.5];
-    var y = x.map((z) => 4.0 - 1.5*z).toList();
+    var y = x.map((z) => 4.0 - 1.5 * z).toList();
 
     var resp = line(x, y);
     expect(almostEqualD(4.0, resp.item1, 1e-12), isTrue);
@@ -14,7 +14,7 @@ void main() {
 
     var resf = lineFunc(x, y);
     for (var z in List<double>.generate(10, (i) => i - 3.0)) {
-      expect(almostEqualD(4.0 - 1.5*z, resf(z), 1e-12), isTrue);
+      expect(almostEqualD(4.0 - 1.5 * z, resf(z), 1e-12), isTrue);
     }
   });
 
@@ -50,11 +50,12 @@ void main() {
       expect(almostEqualD(-0.467791 * z, resf(z), 1e-4), isTrue);
     }
 
-    var respSeq = List.filled(x.length, Tuple2<double, double>(0.0,0.0));
-    for(int i = 0; i < x.length; i++) {
+    var respSeq = List.filled(x.length, Tuple2<double, double>(0.0, 0.0));
+    for (int i = 0; i < x.length; i++) {
       respSeq[i] = Tuple2(x[i], y[i]);
     }
-    expect(almostEqualD(-0.467791, fitThroughOriginFromMany(respSeq), 1e-4), isTrue);
+    expect(almostEqualD(-0.467791, fitThroughOriginFromMany(respSeq), 1e-4),
+        isTrue);
   });
 
   test('Fits to line same as excel TrendLine', () {
@@ -73,7 +74,7 @@ void main() {
 
     var resf = lineFunc(x, y);
     for (var z in List<double>.generate(10, (i) => i - 3.0)) {
-      expect(almostEqualD(-1.078 + 0.7932*z, resf(z), 1e-2), isTrue);
+      expect(almostEqualD(-1.078 + 0.7932 * z, resf(z), 1e-2), isTrue);
     }
   });
 }
