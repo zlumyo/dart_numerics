@@ -18,6 +18,7 @@
 library dart_numerics;
 
 export 'src/linear_regression/simple_regression.dart';
+export 'src/special_functions/beta.dart';
 export 'src/special_functions/gamma.dart';
 export 'src/constants.dart';
 export 'src/euclid.dart';
