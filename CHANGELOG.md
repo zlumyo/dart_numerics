@@ -1,3 +1,11 @@
+## 0.0.4
+
+- Family of Gamma functions.
+- Family of Beta functions.
+- More Precision-related functions.
+- Fixed missed export of Comparison-related functions.
+- More `pub`-friendly repository.
+
 ## 0.0.3
 
 - Simple regression functions.
