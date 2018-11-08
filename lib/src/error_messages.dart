@@ -8,3 +8,5 @@ const String regressionNotEnoughSamples =
     'A regression of the requested order missmatches with provided.';
 const String argumentInIntervalXYInclusive =
     'Value is expected to be between interval (inclusive).';
+const String argumentParameterSetInvalid =
+    'The chosen parameter set is invalid (probably some value is out of range).';

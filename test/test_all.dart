@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 
+import 'special_functions_tests/factorial_test.dart' as factorial;
 import 'special_functions_tests/gamma_test.dart' as gamma;
 import 'fit_test.dart' as fit;
 import 'permutation_test.dart' as permutation;
@@ -12,4 +13,5 @@ void main() {
   group('trigonometry', trigonometry.main);
   group('fit', fit.main);
   group('gamma', gamma.main);
+  group('gamma', factorial.main);
 }
