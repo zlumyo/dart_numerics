@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:dart_numerics/src/precision.dart';
+
 import 'error_messages.dart' as messages;
 
 /// Canonical Modulus. The result has the sign of the divisor.
@@ -10,12 +12,19 @@ double modulusD(double dividend, double divisor) =>
 int modulusI(int dividend, int divisor) =>
     ((dividend % divisor) + divisor) % divisor;
 
+/// Canonical Modulus. The result has the sign of the divisor.
+BigInt modulusBig(BigInt dividend, BigInt divisor) =>
+    ((dividend % divisor) + divisor) % divisor;
+
 /// Remainder (% operator). The result has the sign of the dividend.
 double remainderD(double dividend, double divisor) =>
     dividend.remainder(divisor);
 
 /// Remainder (% operator). The result has the sign of the dividend.
 int remainderI(int dividend, int divisor) => dividend.remainder(divisor);
+
+/// Remainder (% operator). The result has the sign of the dividend.
+BigInt remainder(BigInt dividend, BigInt divisor) => dividend % divisor;
 
 /// Find out whether the provided integer is an even number.
 bool isEven(int number) => number.isEven;
@@ -36,21 +45,25 @@ bool isPerfectSquare(int number) {
     return false;
   }
 
-  var x = number ~/ 2;
-  var seen = Set.from([x]);
-  while (x * x != number) {
-    x = (x + (number ~/ x)) ~/ 2;
-    if (seen.contains(x)) {
-      return false;
-    }
-    seen.add(x);
+  int lastHexDigit = number & 0xF;
+  if (lastHexDigit > 9) {
+    return false; // return immediately in 6 cases out of 16.
   }
-  return true;
+
+  if (lastHexDigit == 0 ||
+      lastHexDigit == 1 ||
+      lastHexDigit == 4 ||
+      lastHexDigit == 9) {
+    int t = (sqrt(number) + 0.5).floor();
+    return (t * t) == number;
+  }
+
+  return false;
 }
 
 /// Raises 2 to the provided integer [exponent] (0 < [exponent]).
 int powerOfTwo(int exponent) {
-  if (exponent < 0) {
+  if (exponent < 0 || exponent >= 63) {
     throw ArgumentError.value(
         exponent, 'exponent', messages.argumentNotNegative);
   }
@@ -60,36 +73,106 @@ int powerOfTwo(int exponent) {
 
 /// Evaluate the binary logarithm of an integer number.
 ///
-/// Rounding mode is half even.
+/// Two-step method using a De Bruijn-like sequence table lookup.
 int log2(int number) {
-  if (number <= 0) {
-    throw ArgumentError.value(number, 'number', messages.argumentPositive);
-  }
+  number |= number >> 1;
+  number |= number >> 2;
+  number |= number >> 4;
+  number |= number >> 8;
+  number |= number >> 16;
+  number |= number >> 32;
 
-  int logFloor = number.bitLength - 1;
-  if (logFloor < _sqrt2PrecomputeThreshold) {
-    int halfPower =
-        _sqrt2PrecomputedBits >> (_sqrt2PrecomputeThreshold - logFloor);
-    if (number.compareTo(halfPower) <= 0) {
-      return logFloor;
-    } else {
-      return logFloor + 1;
-    }
-  }
-
-  // Since sqrt(2) is irrational, log2(x) - logFloor cannot be exactly 0.5
-  // To determine which side of logFloor.5 the logarithm is, we compare x^2 to 2^(2 * logFloor + 1).
-  int x2 = pow(number, 2);
-  int logX2Floor = x2.bitLength - 1;
-  return (logX2Floor < 2 * logFloor + 1) ? logFloor : logFloor + 1;
+  return multiplyDeBruijnBitPosition[
+      ((number - (number >> 1)) * 0x07EDD5E59A4E28C2) >> 58];
 }
 
-const _sqrt2PrecomputeThreshold = 256;
-final _sqrt2PrecomputedBits = int.parse(
-    '163754743014928255235102403085959256615014864942486474123643707201513509564970');
+List<int> multiplyDeBruijnBitPosition = [
+  63,
+  0,
+  58,
+  1,
+  59,
+  47,
+  53,
+  2,
+  60,
+  39,
+  48,
+  27,
+  54,
+  33,
+  42,
+  3,
+  61,
+  51,
+  37,
+  40,
+  49,
+  18,
+  28,
+  20,
+  55,
+  30,
+  34,
+  11,
+  43,
+  14,
+  22,
+  4,
+  62,
+  57,
+  46,
+  52,
+  38,
+  26,
+  32,
+  41,
+  50,
+  36,
+  17,
+  19,
+  29,
+  10,
+  13,
+  21,
+  56,
+  45,
+  25,
+  31,
+  35,
+  16,
+  9,
+  12,
+  44,
+  24,
+  15,
+  8,
+  23,
+  7,
+  6,
+  5
+];
 
 /// Find the closest perfect power of two that is larger or equal to the provided integer.
-int ceilingToPowerOfTwo(int number) => number.bitLength - 1;
+int ceilingToPowerOfTwo(int number) {
+  if (number == int64MinValue) {
+    return 0;
+  }
+
+  const maxPowerOfTwo = 0x4000000000000000;
+  if (number > maxPowerOfTwo) {
+    throw ArgumentError('Value ${number} is out of range.');
+  }
+
+  number--;
+  number |= number >> 1;
+  number |= number >> 2;
+  number |= number >> 4;
+  number |= number >> 8;
+  number |= number >> 16;
+  number |= number >> 32;
+  return number + 1;
+}
 
 /// Returns the greatest common divisor (gcd) of two integers using Euclid's algorithm.
 int greatestCommonDivisor(int a, int b) => a.gcd(b);
@@ -122,7 +205,7 @@ int leastCommonMultiple(int a, int b) {
   return ((a ~/ greatestCommonDivisor(a, b)) * b).abs();
 }
 
-/// Returns the greatest common divisor (gcd) of two integers using Euclid's algorithm.
+/// Returns the least common multiple (lcm) of many [BigInt] using Euclid's algorithm.
 int leastCommonMultipleOfMany(List<int> integers) {
   if (null == integers) {
     throw ArgumentError.notNull('integers');
@@ -136,6 +219,56 @@ int leastCommonMultipleOfMany(List<int> integers) {
 
   for (var i = 1; i < integers.length; i++) {
     lcm = leastCommonMultiple(lcm, integers[i]);
+  }
+
+  return lcm;
+}
+
+/// Returns the greatest common divisor (gcd) of two [BigInt] using Euclid's algorithm.
+BigInt greatestCommonDivisorBig(BigInt a, BigInt b) => a.gcd(b);
+
+/// Returns the greatest common divisor (gcd) of many [BigInt] using Euclid's algorithm.
+BigInt greatestCommonDivisorOfManyBig(List<BigInt> integers) {
+  if (null == integers) {
+    throw ArgumentError.notNull('integers');
+  }
+
+  if (integers.length == 0) {
+    return BigInt.zero;
+  }
+
+  var gcd = integers[0].abs();
+
+  for (var i = 1; (i < integers.length) && (gcd > BigInt.one); i++) {
+    gcd = greatestCommonDivisorBig(gcd, integers[i]);
+  }
+
+  return gcd;
+}
+
+/// Returns the least common multiple (lcm) of two [BigInt] using Euclid's algorithm.
+BigInt leastCommonMultipleBig(BigInt a, BigInt b) {
+  if ((a == BigInt.zero) || (b == BigInt.zero)) {
+    return BigInt.zero;
+  }
+
+  return ((a ~/ greatestCommonDivisorBig(a, b)) * b).abs();
+}
+
+/// Returns the least common multiple (lcm) of many [BigInt] using Euclid's algorithm.
+BigInt leastCommonMultipleOfManyBig(List<BigInt> integers) {
+  if (null == integers) {
+    throw ArgumentError.notNull('integers');
+  }
+
+  if (integers.length == 0) {
+    return BigInt.one;
+  }
+
+  var lcm = integers[0].abs();
+
+  for (var i = 1; i < integers.length; i++) {
+    lcm = leastCommonMultipleBig(lcm, integers[i]);
   }
 
   return lcm;
