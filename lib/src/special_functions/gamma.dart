@@ -467,7 +467,7 @@ double diGamma(double x) {
 /// the gamma function. This function will only return solutions that are positive.
 ///
 /// This implementation is based on the bisection method.
-double DiGammaInv(double p) {
+double diGammaInv(double p) {
   if (p.isNaN) {
     return double.nan;
   }
