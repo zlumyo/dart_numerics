@@ -22,6 +22,7 @@ export 'src/special_functions/beta.dart';
 export 'src/special_functions/exponential_integral.dart';
 export 'src/special_functions/factorial.dart';
 export 'src/special_functions/gamma.dart';
+export 'src/special_functions/logistic.dart';
 export 'src/constants.dart';
 export 'src/euclid.dart';
 export 'src/fit.dart';

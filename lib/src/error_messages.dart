@@ -10,3 +10,4 @@ const String argumentInIntervalXYInclusive =
     'Value is expected to be between interval (inclusive).';
 const String argumentParameterSetInvalid =
     'The chosen parameter set is invalid (probably some value is out of range).';
+const String argumentBetween0And1 = 'The argument must be between 0 and 1.';
