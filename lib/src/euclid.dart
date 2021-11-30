@@ -179,10 +179,6 @@ int greatestCommonDivisor(int a, int b) => a.gcd(b);
 
 /// Returns the greatest common divisor (gcd) of two integers using Euclid's algorithm.
 int greatestCommonDivisorOfMany(List<int> integers) {
-  if (null == integers) {
-    throw ArgumentError.notNull('integers');
-  }
-
   if (integers.length == 0) {
     return 0;
   }
@@ -207,10 +203,6 @@ int leastCommonMultiple(int a, int b) {
 
 /// Returns the least common multiple (lcm) of many [BigInt] using Euclid's algorithm.
 int leastCommonMultipleOfMany(List<int> integers) {
-  if (null == integers) {
-    throw ArgumentError.notNull('integers');
-  }
-
   if (integers.length == 0) {
     return 1;
   }
@@ -229,10 +221,6 @@ BigInt greatestCommonDivisorBig(BigInt a, BigInt b) => a.gcd(b);
 
 /// Returns the greatest common divisor (gcd) of many [BigInt] using Euclid's algorithm.
 BigInt greatestCommonDivisorOfManyBig(List<BigInt> integers) {
-  if (null == integers) {
-    throw ArgumentError.notNull('integers');
-  }
-
   if (integers.length == 0) {
     return BigInt.zero;
   }
@@ -257,10 +245,6 @@ BigInt leastCommonMultipleBig(BigInt a, BigInt b) {
 
 /// Returns the least common multiple (lcm) of many [BigInt] using Euclid's algorithm.
 BigInt leastCommonMultipleOfManyBig(List<BigInt> integers) {
-  if (null == integers) {
-    throw ArgumentError.notNull('integers');
-  }
-
   if (integers.length == 0) {
     return BigInt.one;
   }
