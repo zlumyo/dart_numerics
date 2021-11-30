@@ -4,7 +4,7 @@ version: 0.0.5
 homepage: https://github.com/zlumyo/dart_numerics
 
 environment:
-  sdk: '>=2.0.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   tuple: ^2.0.0
