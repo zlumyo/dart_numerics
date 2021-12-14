@@ -25,7 +25,7 @@ const int doubleWidth = 53;
 /// double-precision floating numbers (64 bit).
 ///
 /// According to the definition of Prof. Demmel and used in LAPACK and Scilab.
-final double doublePrecision = pow(2, -doubleWidth);
+final double doublePrecision = pow(2, -doubleWidth) as double;
 
 /// Standard epsilon, the maximum relative precision of IEEE 754
 /// double-precision floating numbers (64 bit).

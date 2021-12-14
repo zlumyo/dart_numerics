@@ -94,10 +94,6 @@ double multinomial(int n, List<int> ni) {
     throw ArgumentError.value(n, 'n', messages.argumentPositive);
   }
 
-  if (ni == null) {
-    throw ArgumentError.notNull('ni');
-  }
-
   int sum = 0;
   double ret = factorialLn(n);
   for (int i = 0; i < ni.length; i++) {
