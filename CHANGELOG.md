@@ -1,3 +1,10 @@
+## 0.0.6
+
+- Polynomial evaluate function for double.
+- Family of Error functions.
+- Add Gamma lower regularized inverse.
+- Null safety support.
+
 ## 0.0.5 
 
 - Factorial functions.
