@@ -1,6 +1,6 @@
 name: dart_numerics
 description: An ultimate numerical package for Dart for professional and every day use.
-version: 0.0.5
+version: 0.0.6-SNAPSHOT
 homepage: https://github.com/zlumyo/dart_numerics
 
 environment:
