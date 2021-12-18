@@ -656,7 +656,179 @@ void main() {
     });
   });
 
-  // TODO group for gammaLowerRegularizedInv
+  group('Gamma lower regularized inverse', () {
+    test('Test 1', () {
+      const double a = double.nan;
+      const double x = double.nan;
+      const double y = double.nan;
+      const int digits = 14;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 2', () {
+      const double a = 0.1;
+      const double x = 1.0;
+      const double y = 0.97587265627367222115949155252812057714751052498477013;
+      const int digits = 13;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 3', () {
+      const double a = 0.1;
+      const double x = 2.0;
+      const double y = 0.99432617602018847196075251078067514034772764693462125;
+      const int digits = 13;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 4', () {
+      const double a = 0.1;
+      const double x = 8.0;
+      const double y = 0.99999507519205198048686442150578226823401842046310854;
+      const int digits = 10;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 5', () {
+      const double a = 1.5;
+      const double x = 1.0;
+      const double y = 0.42759329552912016600095238564127189392715996802703368;
+      const int digits = 13;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 6', () {
+      const double a = 1.5;
+      const double x = 2.0;
+      const double y = 0.73853587005088937779717792402407879809718939080920993;
+      const int digits = 13;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 7', () {
+      const double a = 1.5;
+      const double x = 8.0;
+      const double y = 0.99886601571021467734329986257903021041757398191304284;
+      const int digits = 13;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 8', () {
+      const double a = 2.5;
+      const double x = 1.0;
+      const double y = 0.15085496391539036377410688601371365034788861473418704;
+      const int digits = 13;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 9', () {
+      const double a = 2.5;
+      const double x = 2.0;
+      const double y = 0.45058404864721976739416885516693969548484517509263197;
+      const int digits = 13;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 10', () {
+      const double a = 2.5;
+      const double x = 8.0;
+      const double y = 0.99315592607757956900093935107222761316136944145439676;
+      const int digits = 13;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 11', () {
+      const double a = 5.5;
+      const double x = 1.0;
+      const double y =
+          0.0015041182825838038421585211353488839717739161316985392;
+      const int digits = 13;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 12', () {
+      const double a = 5.5;
+      const double x = 2.0;
+      const double y = 0.030082976121226050615171484772387355162056796585883967;
+      const int digits = 13;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 13', () {
+      const double a = 5.5;
+      const double x = 8.0;
+      const double y = 0.85886911973294184646060071855669224657735916933487681;
+      const int digits = 13;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 14', () {
+      const double a = 100;
+      const double x = 90;
+      const double y = 0.1582209891864301681049696996709105316998233457433473;
+      const int digits = 12;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 15', () {
+      const double a = 100;
+      const double x = 100;
+      const double y = 0.5132987982791486648573142565640291634709251499279450;
+      const int digits = 12;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 16', () {
+      const double a = 100;
+      const double x = 110;
+      const double y = 0.8417213299399129061982996209829688531933500308658222;
+      const int digits = 12;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 17', () {
+      const double a = 500;
+      const double x = 450;
+      const double y = 0.0107172380912897415573958770655204965434869949241480;
+      const int digits = 12;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 18', () {
+      const double a = 500;
+      const double x = 500;
+      const double y = 0.5059471461707603580470479574412058032802735425634263;
+      const int digits = 12;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+
+    test('Test 19', () {
+      const double a = 500;
+      const double x = 550;
+      const double y = 0.9853855918737048059548470006900844665580616318702748;
+      const int digits = 12;
+
+      almostEqualRelative(x, gammaLowerRegularizedInv(a, y), digits);
+    });
+  });
 
   group('Gamma lower incomplete', () {
     test('Test 1', () {

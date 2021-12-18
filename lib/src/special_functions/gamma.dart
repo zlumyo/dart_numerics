@@ -4,6 +4,7 @@ import '../constants.dart' as constants;
 import '../error_messages.dart' as messages;
 import '../precision_equality.dart' show almostEqual;
 import '../trigonometry.dart' as trig;
+import './erf.dart' as erf;
 
 /// The order of the [gammaLn] approximation.
 const int _gammaN = 10;
@@ -252,160 +253,161 @@ double gammaLowerRegularized(double a, double x) {
   return 1.0 - (stdmath.exp(ax) * ans);
 }
 
-// TODO uncomment when error functions will be implemented
-// Returns the inverse P^(-1) of the regularized lower incomplete gamma function
-// P(a,x) = 1/Gamma(a) * int(exp(-t)t^(a-1),t=0..x) for real a &gt; 0, x &gt; 0,
-// such that P^(-1)(a,P(a,x)) == x.
-//double gammaLowerRegularizedInv(double a, double y0) {
-//  const double epsilon = 0.000000000000001;
-//  const double big = 4503599627370496.0;
-//  const double threshold = 5*epsilon;
-//
-//  if (a.isNaN || y0.isNaN) {
-//    return double.nan;
-//  }
-//
-//  if (a < 0 || almostEqual(a, 0.0)) {
-//    throw ArgumentError.value(a, 'a', 'Value is out of range.');
-//  }
-//
-//  if (y0 < 0 || y0 > 1) {
-//    throw ArgumentError.value(y0, 'y0', 'Value is out of range.');
-//  }
-//
-//  if (almostEqual(y0, 0.0)) {
-//    return 0.0;
-//  }
-//
-//  if (almostEqual(y0, 1.0)) {
-//    return double.infinity;
-//  }
-//
-//  y0 = 1 - y0;
-//
-//  double xUpper = big;
-//  double xLower = 0.0;
-//  double yUpper = 1.0;
-//  double yLower = 0.0;
-//
-//  // Initial Guess
-//  double d = 1/(9*a);
-//  double y = 1 - d - (0.98*constants.sqrt2*erfInv((2.0*y0) - 1.0)*stdmath.sqrt(d));
-//  double x = a*y*y*y;
-//  double lgm = gammaLn(a);
-//
-//  for (int i = 0; i < 20; i++) {
-//    if (x < xLower || x > xUpper) {
-//      d = 0.0625;
-//      break;
-//    }
-//
-//    y = 1 - gammaLowerRegularized(a, x);
-//    if (y < yLower || y > yUpper) {
-//      d = 0.0625;
-//      break;
-//    }
-//
-//    if (y < y0) {
-//      xUpper = x;
-//      yLower = y;
-//    } else {
-//      xLower = x;
-//      yUpper = y;
-//    }
-//
-//    d = ((a - 1)*stdmath.log(x)) - x - lgm;
-//    if (d < -709.78271289338399) {
-//      d = 0.0625;
-//      break;
-//    }
-//
-//    d = -stdmath.exp(d);
-//    d = (y - y0)/d;
-//    if ((d/x).abs() < epsilon) {
-//      return x;
-//    }
-//
-//    if ((d > (x/4)) && (y0 < 0.05)) {
-//      // Naive heuristics for cases near the singularity
-//      d = x/10;
-//    }
-//
-//    x -= d;
-//  }
-//
-//  if (xUpper == big) {
-//    if (x <= 0) {
-//      x = 1.0;
-//    }
-//
-//    while (xUpper == big) {
-//      x = (1 + d)*x;
-//      y = 1 - gammaLowerRegularized(a, x);
-//      if (y < y0) {
-//        xUpper = x;
-//        yLower = y;
-//        break;
-//      }
-//
-//      d = d + d;
-//    }
-//  }
-//
-//  int dir = 0;
-//  d = 0.5;
-//  for (int i = 0; i < 400; i++) {
-//    x = xLower + (d*(xUpper - xLower));
-//    y = 1 - gammaLowerRegularized(a, x);
-//    lgm = (xUpper - xLower)/(xLower + xUpper);
-//    if (lgm.abs() < threshold) {
-//      return x;
-//    }
-//
-//    lgm = (y - y0)/y0;
-//    if (lgm.abs() < threshold) {
-//      return x;
-//    }
-//
-//    if (x <= 0.0) {
-//      return 0.0;
-//    }
-//
-//    if (y >= y0) {
-//      xLower = x;
-//      yUpper = y;
-//      if (dir < 0) {
-//        dir = 0;
-//        d = 0.5;
-//      } else {
-//        if (dir > 1) {
-//          d = (0.5*d) + 0.5;
-//        } else {
-//          d = (y0 - yLower)/(yUpper - yLower);
-//        }
-//      }
-//
-//      dir = dir + 1;
-//    } else {
-//      xUpper = x;
-//      yLower = y;
-//      if (dir > 0) {
-//        dir = 0;
-//        d = 0.5;
-//      } else {
-//        if (dir < -1) {
-//          d = 0.5*d;
-//        } else {
-//          d = (y0 - yLower)/(yUpper - yLower);
-//        }
-//      }
-//
-//      dir = dir - 1;
-//    }
-//  }
-//
-//  return x;
-//}
+/// Returns the inverse P^(-1) of the regularized lower incomplete gamma function
+/// P(a,x) = 1/Gamma(a) * int(exp(-t)t^(a-1),t=0..x) for real a &gt; 0, x &gt; 0,
+/// such that P^(-1)(a,P(a,x)) == x.
+double gammaLowerRegularizedInv(double a, double y0) {
+  const double epsilon = 0.000000000000001;
+  const double big = 4503599627370496.0;
+  const double threshold = 5 * epsilon;
+
+  if (a.isNaN || y0.isNaN) {
+    return double.nan;
+  }
+
+  if (a < 0 || almostEqual(a, 0.0)) {
+    throw ArgumentError.value(a, 'a', 'Value is out of range.');
+  }
+
+  if (y0 < 0 || y0 > 1) {
+    throw ArgumentError.value(y0, 'y0', 'Value is out of range.');
+  }
+
+  if (almostEqual(y0, 0.0)) {
+    return 0.0;
+  }
+
+  if (almostEqual(y0, 1.0)) {
+    return double.infinity;
+  }
+
+  y0 = 1 - y0;
+
+  double xUpper = big;
+  double xLower = 0.0;
+  double yUpper = 1.0;
+  double yLower = 0.0;
+
+  // Initial Guess
+  double d = 1 / (9 * a);
+  double y = 1 -
+      d -
+      (0.98 * constants.sqrt2 * erf.erfInv((2.0 * y0) - 1.0) * stdmath.sqrt(d));
+  double x = a * y * y * y;
+  double lgm = gammaLn(a);
+
+  for (int i = 0; i < 20; i++) {
+    if (x < xLower || x > xUpper) {
+      d = 0.0625;
+      break;
+    }
+
+    y = 1 - gammaLowerRegularized(a, x);
+    if (y < yLower || y > yUpper) {
+      d = 0.0625;
+      break;
+    }
+
+    if (y < y0) {
+      xUpper = x;
+      yLower = y;
+    } else {
+      xLower = x;
+      yUpper = y;
+    }
+
+    d = ((a - 1) * stdmath.log(x)) - x - lgm;
+    if (d < -709.78271289338399) {
+      d = 0.0625;
+      break;
+    }
+
+    d = -stdmath.exp(d);
+    d = (y - y0) / d;
+    if ((d / x).abs() < epsilon) {
+      return x;
+    }
+
+    if ((d > (x / 4)) && (y0 < 0.05)) {
+      // Naive heuristics for cases near the singularity
+      d = x / 10;
+    }
+
+    x -= d;
+  }
+
+  if (xUpper == big) {
+    if (x <= 0) {
+      x = 1.0;
+    }
+
+    while (xUpper == big) {
+      x = (1 + d) * x;
+      y = 1 - gammaLowerRegularized(a, x);
+      if (y < y0) {
+        xUpper = x;
+        yLower = y;
+        break;
+      }
+
+      d = d + d;
+    }
+  }
+
+  int dir = 0;
+  d = 0.5;
+  for (int i = 0; i < 400; i++) {
+    x = xLower + (d * (xUpper - xLower));
+    y = 1 - gammaLowerRegularized(a, x);
+    lgm = (xUpper - xLower) / (xLower + xUpper);
+    if (lgm.abs() < threshold) {
+      return x;
+    }
+
+    lgm = (y - y0) / y0;
+    if (lgm.abs() < threshold) {
+      return x;
+    }
+
+    if (x <= 0.0) {
+      return 0.0;
+    }
+
+    if (y >= y0) {
+      xLower = x;
+      yUpper = y;
+      if (dir < 0) {
+        dir = 0;
+        d = 0.5;
+      } else {
+        if (dir > 1) {
+          d = (0.5 * d) + 0.5;
+        } else {
+          d = (y0 - yLower) / (yUpper - yLower);
+        }
+      }
+
+      dir = dir + 1;
+    } else {
+      xUpper = x;
+      yLower = y;
+      if (dir > 0) {
+        dir = 0;
+        d = 0.5;
+      } else {
+        if (dir < -1) {
+          d = 0.5 * d;
+        } else {
+          d = (y0 - yLower) / (yUpper - yLower);
+        }
+      }
+
+      dir = dir - 1;
+    }
+  }
+
+  return x;
+}
 
 /// Computes the Digamma function which is mathematically defined as
 /// the derivative of the logarithm of the gamma function.
