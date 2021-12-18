@@ -1,3 +1,9 @@
+## 0.0.5 
+
+- Factorial functions.
+- Exponential integral functions.
+- Add missed tests
+
 ## 0.0.4
 
 - Family of Gamma functions.
