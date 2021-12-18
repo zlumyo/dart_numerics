@@ -5,6 +5,7 @@ import 'special_functions_tests/exponential_integral_test.dart'
 import 'special_functions_tests/factorial_test.dart' as factorial;
 import 'special_functions_tests/gamma_test.dart' as gamma;
 import 'special_functions_tests/logistic_test.dart' as logistic;
+import 'special_functions_tests/beta_test.dart' as beta;
 import 'fit_test.dart' as fit;
 import 'permutation_test.dart' as permutation;
 import 'precision_test.dart' as precision;
@@ -19,4 +20,5 @@ void main() {
   group('factorial', factorial.main);
   group('exponential integral', exponential_integral.main);
   group('logistic', logistic.main);
+  group('beta', beta.main);
 }
