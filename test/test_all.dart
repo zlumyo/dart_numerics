@@ -10,6 +10,7 @@ import 'fit_test.dart' as fit;
 import 'permutation_test.dart' as permutation;
 import 'precision_test.dart' as precision;
 import 'trigonometry_test.dart' as trigonometry;
+import 'polynomial_test.dart' as polynomial;
 
 void main() {
   group('permutation', permutation.main);
@@ -20,5 +21,6 @@ void main() {
   group('factorial', factorial.main);
   group('exponential integral', exponential_integral.main);
   group('logistic', logistic.main);
+  group('polynomial', polynomial.main);
   group('beta', beta.main);
 }

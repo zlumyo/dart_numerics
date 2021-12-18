@@ -27,6 +27,7 @@ export 'src/constants.dart';
 export 'src/euclid.dart';
 export 'src/fit.dart';
 export 'src/permutation.dart';
+export 'src/polynomial.dart';
 export 'src/precision.dart' hide asDirectionalInt64;
 export 'src/precision_equality.dart';
 export 'src/precision_comparison.dart';
