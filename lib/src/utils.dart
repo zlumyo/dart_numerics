@@ -1,13 +1,14 @@
-import 'dart:math';
+import 'dart:math' as stdmath;
 import 'dart:typed_data';
 
 import 'package:tuple/tuple.dart';
+import 'constants.dart' as constants;
 
 /// Converts [x] to a [double] and returns the common logarithm of the value.
 ///
 /// WARNING!!! This function is not such accurate as low-level implementation!
 /// WARNING!!! Some unit-tests fail because of that!
-double log10(num x) => log(x) / ln10;
+double log10(num x) => stdmath.log(x) / constants.ln10;
 
 Tuple2<List<TU>, List<TV>> unpackSinglePass<TU, TV>(
     Iterable<Tuple2<TU, TV>> samples) {
