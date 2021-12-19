@@ -956,7 +956,7 @@ void main() {
     });
 
     test('3 -> +/- 0.0005 (0.5e-3)', () {
-      expect(almostEqualI(0.01, 0.0106, 1), isFalse);
+      expect(almostEqualI(0.01, 0.0106, 3), isFalse);
       expect(almostEqualI(0.01, 0.0104, 3), isTrue);
       expect(almostEqualI(0.01, 0.0100, 3), isTrue);
       expect(almostEqualI(0.01, 0.0096, 3), isTrue);
