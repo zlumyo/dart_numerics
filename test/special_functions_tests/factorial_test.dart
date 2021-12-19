@@ -28,7 +28,7 @@ void main() {
 
   group('Throws ArgumentError on a negative argument.', () {
     test('Test 1', () {
-      expect(() => factorialD(int64MinValue), throwsArgumentError);
+      expect(() => factorialD(intMinValue), throwsArgumentError);
     });
 
     test('Test 2', () {
@@ -46,7 +46,7 @@ void main() {
     });
 
     test('Test 2', () {
-      expect(factorialD(int64MaxValue), equals(double.infinity));
+      expect(factorialD(intMaxValue), equals(double.infinity));
     });
   });
 

@@ -47,7 +47,7 @@ bool almostEqualNormI(double a, double b, double diff, int decimalPlaces) {
   // than 10^(-numberOfDecimalPlaces). We divide by two so that we have half the
   // range on each side of the numbers, e.g. if decimalPlaces == 2,
   // then 0.01 will equal between 0.005 and 0.015, but not 0.02 and not 0.00
-  return diff.abs() < pow(10, -decimalPlaces) / 2.0;
+  return diff.abs() < pow(10, -decimalPlaces) * 0.5;
 }
 
 /// Compares two doubles and determines if they are equal

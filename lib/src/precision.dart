@@ -5,15 +5,17 @@ import 'package:tuple/tuple.dart';
 
 import 'error_messages.dart' as messages;
 import 'utils.dart';
+import 'precision_native.dart' if (dart.library.html) 'precision_js.dart'
+    as platform_precision;
 
 /// The smallest positive [double] value that is greater than zero.
 const double epsilon = 4.94065645841247E-324;
 
 /// The smallest possible value of an int within 64 bits.
-const int int64MinValue = -9223372036854775808;
+const int intMinValue = platform_precision.intMinValue;
 
 /// The biggest possible value of an int within 64 bits.
-const int int64MaxValue = 9223372036854775807;
+const int intMaxValue = platform_precision.intMaxValue;
 
 /// The number of binary digits used to represent the binary number for a double
 /// precision floating point value. i.e. there are this many digits used
@@ -88,7 +90,7 @@ int asDirectionalInt64(double value) {
   // Now find out where we're at in the range
   // If the value is larger/equal to zero then we can just return the value
   // if the value is negative we subtract [int64MinValue] from it.
-  return (result >= 0) ? result : (int64MinValue - result);
+  return (result >= 0) ? result : (intMinValue - result);
 }
 
 /// Increments a floating point number to the next bigger number representable by the data type.
@@ -120,7 +122,7 @@ double increment(double value, [int count = 1]) {
   }
 
   // Note that int64MinValue has the same bit pattern as -0.0.
-  if (intValue == int64MinValue) {
+  if (intValue == intMinValue) {
     return 0.0;
   }
 
@@ -157,7 +159,7 @@ double decrement(double value, [int count = 1]) {
   // and then everything else should work out.
   if (intValue == 0) {
     // Note that long.MinValue has the same bit pattern as -0.0.
-    intValue = int64MinValue;
+    intValue = intMinValue;
   }
 
   if (intValue < 0) {
@@ -264,11 +266,11 @@ Tuple2<double, double> rangeOfMatchingFloatingPointNumbers(
     // Note that long.MinValue has the same bit pattern as
     // -0.0. Therefore we're working in opposite direction (i.e. add if we want to
     // go more negative and subtract if we want to go less negative)
-    var topRangeEnd = (int64MinValue - intValue).abs() < maxNumbersBetween
+    var topRangeEnd = (intMinValue - intValue).abs() < maxNumbersBetween
         // Got underflow, which can be fixed by splitting the calculation into two bits
         // first get the remainder of the intValue after subtracting it from the long.MinValue
         // and add that to the ulpsDifference. That way we'll turn positive without underflow
-        ? int64BitsToDouble(maxNumbersBetween + (int64MinValue - intValue))
+        ? int64BitsToDouble(maxNumbersBetween + (intMinValue - intValue))
         // No problems here, move along.
         : int64BitsToDouble(intValue - maxNumbersBetween);
 
@@ -283,7 +285,7 @@ Tuple2<double, double> rangeOfMatchingFloatingPointNumbers(
     return Tuple2<double, double>(bottomRangeEnd, topRangeEnd);
   } else {
     // IntValue is positive
-    var topRangeEnd = int64MaxValue - intValue < maxNumbersBetween
+    var topRangeEnd = intMaxValue - intValue < maxNumbersBetween
         // Overflow, which means we'd have to go further than a long would allow us.
         // Also we couldn't translate it back to a double, so we'll return Double.MaxValue
         ? double.maxFinite
@@ -297,7 +299,7 @@ Tuple2<double, double> rangeOfMatchingFloatingPointNumbers(
         ? int64BitsToDouble(intValue - maxNumbersBetween)
         // Int value is bigger than zero but smaller than the ulpsDifference. So we'll need to deal with
         // the reversal at the negative end
-        : int64BitsToDouble(int64MinValue + (maxNumbersBetween - intValue));
+        : int64BitsToDouble(intMinValue + (maxNumbersBetween - intValue));
 
     return Tuple2<double, double>(bottomRangeEnd, topRangeEnd);
   }

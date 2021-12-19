@@ -155,7 +155,7 @@ List<int> multiplyDeBruijnBitPosition = [
 
 /// Find the closest perfect power of two that is larger or equal to the provided integer.
 int ceilingToPowerOfTwo(int number) {
-  if (number == int64MinValue) {
+  if (number == intMinValue) {
     return 0;
   }
 
